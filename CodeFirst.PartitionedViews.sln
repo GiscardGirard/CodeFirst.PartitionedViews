@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFirst.PartitionedViews.Adapters", "CodeFirst.PartitionedViews.Adapters\CodeFirst.PartitionedViews.Adapters.csproj", "{9D878D5F-87C6-4A68-8979-70F19C7F07FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeFirst.PartitionedViews.Tests", "CodeFirst.PartitionedViews.Tests\CodeFirst.PartitionedViews.Tests.csproj", "{C3740CCD-3F2F-47F9-A771-564A3051707A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9D878D5F-87C6-4A68-8979-70F19C7F07FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D878D5F-87C6-4A68-8979-70F19C7F07FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D878D5F-87C6-4A68-8979-70F19C7F07FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3740CCD-3F2F-47F9-A771-564A3051707A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3740CCD-3F2F-47F9-A771-564A3051707A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3740CCD-3F2F-47F9-A771-564A3051707A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3740CCD-3F2F-47F9-A771-564A3051707A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

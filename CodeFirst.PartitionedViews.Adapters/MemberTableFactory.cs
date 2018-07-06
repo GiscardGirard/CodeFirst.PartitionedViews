@@ -27,7 +27,7 @@ namespace CodeFirst.PartitionedViews.Adapters
         private DbContext CreateTableContext(Type type, string dataRangeKey)
         {            
             var contextType = typeof(MemberTableDbContext<>).MakeGenericType(type);
-            var context = (DbContext)Activator.CreateInstance(contextType, Config.PrimaryKeyPropertyNames, Config.ConnectionName, dataRangeKey);
+            var context = (DbContext)Activator.CreateInstance(contextType, dataRangeKey, Config);
             return context;
         }
         private Type CreatePartitionTableType(Type partitionedViewType, string suffix)

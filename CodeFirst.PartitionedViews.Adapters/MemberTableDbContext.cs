@@ -20,6 +20,9 @@ namespace CodeFirst.PartitionedViews.Adapters
             modelBuilder.Types()
                 .Where(t=>t == DataType)
                 .Configure(c => c.HasKey(PrimaryKeyPropertyNames));
+            
+            PartitionedViewConfiguration.OnModelCreating(modelBuilder);
+
             base.OnModelCreating(modelBuilder);
         }
         public Type DataType
@@ -30,15 +33,15 @@ namespace CodeFirst.PartitionedViews.Adapters
         public IEnumerable<string> PrimaryKeyPropertyNames {get; private set;}
 
         public string PartitionDataRange { get; private set; }
+        PartitionedViewConfiguration PartitionedViewConfiguration { get; }
 
-        public DbContext EmptyContext { get; private set; }
-       
-        public MemberTableDbContext(IEnumerable<string> primaryKeyPropertyNames, string connectionString,string suffix)
-            : base(connectionString)
+        public MemberTableDbContext(string suffix, PartitionedViewConfiguration config)
+            : base(config.ConnectionName)
         {           
             PartitionDataRange = suffix;
-            PrimaryKeyPropertyNames = primaryKeyPropertyNames;
-            Database.SetInitializer<MemberTableDbContext<T>>(new MigrateDatabaseToLatestVersion<MemberTableDbContext<T>, Configuration<T>>(true));
+            PrimaryKeyPropertyNames = config.PrimaryKeyPropertyNames;
+            PartitionedViewConfiguration = config;
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<MemberTableDbContext<T>, Configuration<T>>(true));            
         }
         
            

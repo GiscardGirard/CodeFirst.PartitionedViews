@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -7,8 +8,24 @@ using System.Threading.Tasks;
 
 namespace CodeFirst.PartitionedViews.Adapters
 {
-    public class PartitionedViewConfiguration<T>
+    public abstract class PartitionedViewConfiguration
     {
+        internal abstract void OnModelCreating(DbModelBuilder modelBuilder);
+
+        public abstract IEnumerable<string> PrimaryKeyPropertyNames { get; }
+
+        public abstract IEnumerable<string> DataRangeKeyPropertyNames { get; }
+        public abstract Type DataType { get; }
+
+        public abstract string ConnectionName { get; }
+    }
+
+    public class PartitionedViewConfiguration<T>:PartitionedViewConfiguration
+    {
+        public delegate void ModelCreatingHandler(DbModelBuilder modelBuilder);
+
+        public event ModelCreatingHandler ModelCreating;
+
         public Expression<Func<T, Object>> PrimaryKeyExpression { get; set; }
         public Expression<Func<T, Object>> DataRangeKeyExpression { get; set; }
         private IEnumerable<string> GetPropertyNamesFromKeyExpression(Expression<Func<T, Object>> keyProperty)
@@ -22,19 +39,24 @@ namespace CodeFirst.PartitionedViews.Adapters
             var memberExpression = keyProperty.Body as MemberExpression;
             return new string[] { memberExpression.Member.Name };
         }
-        public IEnumerable<string> PrimaryKeyPropertyNames
+        override internal void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            ModelCreating?.Invoke(modelBuilder);
+        }        
+
+        override public IEnumerable<string> PrimaryKeyPropertyNames
         {
             get { return GetPropertyNamesFromKeyExpression(PrimaryKeyExpression); }
         }
-        public IEnumerable<string> DataRangeKeyPropertyNames
+        override public IEnumerable<string> DataRangeKeyPropertyNames
         {
             get { return GetPropertyNamesFromKeyExpression(DataRangeKeyExpression); }
         }
-        public Type DataType
+        override public Type DataType
         {
             get { return typeof(T); }
         }       
-        public string ConnectionName
+        override public string ConnectionName
         {
             get { return String.Format("name={0}", typeof(T).Name); }
         }
